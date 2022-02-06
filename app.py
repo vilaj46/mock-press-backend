@@ -16,6 +16,7 @@ from classes.Goggles import Goggles
 # Delete this function
 # from utilities.authentication.set_cookie import set_cookie
 # Jie Jen
+# from frontend import * not found when deployed.
 
 app = Flask(__name__)
 
