@@ -21,14 +21,7 @@ class Goggles:
         self.service = Create_Service(
             self.CLIENT_SECRET_FILE, self.API_NAME, self.API_VERSION, self.SCOPES)
         self.file = uploaded_file
-
-    # def upload_file(self, file):
-        # for file_name, mime_type in zip(file_names, mime_types):
-        #     file_metadata = {
-        #         'name': file_name,
-        #         'parents': [folder_id]
-        #     }
-
+        
     def save_to_drive(self):
         file_name = self.file.filename
         mime_type = self.file.content_type

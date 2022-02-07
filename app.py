@@ -45,15 +45,16 @@ def upload():
     uploaded_file = request.files['file']
     google_auth = Goggles(uploaded_file)
     file_name = google_auth.save_to_drive()
-    # Remove file from temporary files.
+    # # Remove file from temporary files.
     tmp_files = os.listdir('./tmp')
-    while file_name in tmp_files:
-        try:
-            os.remove('./tmp/{0}'.format(file_name))
-        except:
-            # Do nothing.
-            print('Deleting...')
-            tmp_files = os.listdir('./tmp')
+    print(tmp_files)
+    # while file_name in tmp_files:
+    #     try:
+    #         os.remove('./tmp/{0}'.format(file_name))
+    #     except:
+    #         # Do nothing.
+    #         print('Deleting...')
+    #         tmp_files = os.listdir('./tmp')
     return {}
 
 
