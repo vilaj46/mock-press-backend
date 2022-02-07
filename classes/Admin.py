@@ -29,6 +29,9 @@ class Admin:
 
     # Authentication
     def login(username, password):
+        print(username)
+        print(password)
+        print('-----------------------')
         my_client = get_db()
         db_name = my_client['users']
         collection_name = db_name['admins']
@@ -38,7 +41,7 @@ class Admin:
         })
 
         success = is_valid_password(password, found_admin['password'])
-        
+
         if success == False:
             error_json = {
                 'message': 'Username or password incorrect.'

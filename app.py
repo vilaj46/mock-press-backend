@@ -54,8 +54,6 @@ def upload():
             # Do nothing.
             print('Deleting...')
             tmp_files = os.listdir('./tmp')
-
-    print(os.listdir('./tmp'))
     return {}
 
 
