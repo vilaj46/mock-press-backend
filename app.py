@@ -1,16 +1,18 @@
+import io
 import os
 import jwt
 import time
 import pymongo
 from flask_cors import CORS
 from itsdangerous import json
-from flask import Flask, make_response, request
+from flask import Flask, make_response, request, send_file
 
 # https://gist.github.com/prahladyeri/0b92b9ca837a0f5474c732876220db78
 
 # Classes
 from classes.Admin import Admin
 from classes.Goggles import Goggles
+from classes.Database import Database
 
 # Utilities
 # Delete this function
@@ -32,7 +34,10 @@ my_client = pymongo.MongoClient(DB_NAME)
 
 @app.route('/')
 def index():
-    return '<p>Hello, World!</p>'
+    db = Database()
+    customers = db.get_customers()
+    response = make_response(customers)
+    return response
 
 
 @app.route('/google')
@@ -57,12 +62,23 @@ def upload():
     return {}
 
 
+@app.route('/files', methods=['GET'])
+def get_files():
+    google = Goggles()
+    files = google.fetch_files()
+    file = files[0]
+    # print(file.seek(0))
+    file.seek(0)
+    return send_file(file, mimetype='application/pdf', download_name='resume.pdf')
+
+
 @app.route("/admin", methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         response = Admin.login(username, password)
+        # new_admin = Admin(username, password)
         return response
     else:
         # Method is GET.
@@ -84,16 +100,52 @@ def admin():
                 })
                 return response, 401
             else:
-                db_name = my_client['users']
-                collection_name = db_name['admins']
-                admins = collection_name.find({})
-                admins_list = []
-                for a in admins:
-                    admins_list.append(a['username'])
-
-                return {'admins': admins_list}
+                db = Database()
+                admins = db.get_admins()
+                return {
+                    'admins': admins
+                }
         except:
             response = make_response({
                 'message': 'Invalid token'
             })
             return response, 401
+# def admin():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         response = Admin.login(username, password)
+#         return response
+#     else:
+        # # Method is GET.
+        # token = request.headers.get('Authorization').split(" ")[1]
+
+        # # Check if token expires
+        # decoded = jwt.decode(token, "secretsecret", algorithms=["HS256"])
+
+        # # date_now = datetime.utcnow()
+        # # print(date_now)
+        # current_time = time.time() * 1000
+        # milli = decoded['exp'] * 1000
+
+        # try:
+        #     expired = current_time >= milli
+        #     if expired == True:
+        #         response = make_response({
+        #             'message': 'Invalid token'
+        #         })
+        #         return response, 401
+        #     else:
+        #         db_name = my_client['users']
+        #         collection_name = db_name['admins']
+        #         admins = collection_name.find({})
+        #         admins_list = []
+        #         for a in admins:
+        #             admins_list.append(a['username'])
+
+        #         return {'admins': admins_list}
+        # except:
+        #     response = make_response({
+        #         'message': 'Invalid token'
+        #     })
+        #     return response, 401
