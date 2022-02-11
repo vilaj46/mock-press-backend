@@ -24,11 +24,11 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# app.config['MONGO_URI'] = 'mongodb+srv://vilaj46:4ex2j842adji888@cluster0.djhoa.mongodb.net/myFirstDatabase'
+# app.config['MONGO_URI'] = 'mongodb+srv://vilaj46:@cluster0.djhoa.mongodb.net/myFirstDatabase'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.config['DB_NAME'] = 'mongodb+srv://vilaj46:4ex2j842adji888@cluster0.djhoa.mongodb.net/myFirstDatabase'
+app.config['DB_NAME'] = 'mongodb+srv://vilaj46:@cluster0.djhoa.mongodb.net/myFirstDatabase'
 app.config['UPLOAD_FOLDER'] = "./tmp"
-DB_NAME = 'mongodb+srv://vilaj46:4ex2j842adji888@cluster0.djhoa.mongodb.net/myFirstDatabase'
+DB_NAME = 'mongodb+srv://vilaj46:@cluster0.djhoa.mongodb.net/myFirstDatabase'
 my_client = pymongo.MongoClient(DB_NAME)
 
 
